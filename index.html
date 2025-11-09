@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Comportamental Financeira - Sistema Integrado</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="container">
+                <div class="welcome-content">
+                    <h1>Avaliação Comportamental Financeira</h1>
+                    <h2>Sistema Integrado de Inventários Científicos</h2>
+                    
+                    <div class="intro-text">
+                        <p>Bem-vindo ao sistema integrado de avaliação comportamental financeira. Este programa foi desenvolvido para profissionais de consultoria financeira que desejam compreender profundamente os aspectos psicológicos que influenciam as decisões financeiras de seus clientes.</p>
+                        
+                        <p>Baseado em instrumentos cientificamente validados, nossa avaliação combina o Inventário de Esquemas de Jeffrey Young, o Inventário de Crenças Financeiras de Klontz, e escalas reconhecidas de bem-estar e comportamento financeiro (CFPB, FMBS e Locus de Controle).</p>
+                        
+                        <p>A avaliação está dividida em 3 módulos principais que exploram emoções, crenças e hábitos relacionados ao dinheiro. Ao final, você receberá um relatório completo com análises detalhadas e recomendações práticas.</p>
+                    </div>
+
+                    <div class="name-input-container">
+                        <label for="client-name">Nome do Cliente (opcional):</label>
+                        <input type="text" id="client-name" class="form-control" placeholder="Digite o nome">
+                    </div>
+                    
+                    <button class="btn btn--primary btn--lg" onclick="startAssessment()">Iniciar Avaliação</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Assessment Screen -->
+        <div id="assessment-screen" class="screen">
+            <!-- Progress Bar -->
+            <div class="progress-bar-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <span id="progress-text" class="progress-text">0% Completo</span>
+            </div>
+
+            <div class="main-layout">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <h3>Módulos</h3>
+                    <nav class="module-nav">
+                        <div class="module-item" data-module="1" onclick="navigateToModule(1)">
+                            <div class="module-icon">1</div>
+                            <div class="module-info">
+                                <div class="module-name">Emoções e Padrões</div>
+                                <div class="module-progress" id="progress-m1">0%</div>
+                            </div>
+                        </div>
+                        <div class="module-item" data-module="2" onclick="navigateToModule(2)">
+                            <div class="module-icon">2</div>
+                            <div class="module-info">
+                                <div class="module-name">Crenças sobre Dinheiro</div>
+                                <div class="module-progress" id="progress-m2">0%</div>
+                            </div>
+                        </div>
+                        <div class="module-item" data-module="3" onclick="navigateToModule(3)">
+                            <div class="module-icon">3</div>
+                            <div class="module-info">
+                                <div class="module-name">Hábitos e Controle</div>
+                                <div class="module-progress" id="progress-m3">0%</div>
+                            </div>
+                        </div>
+                        <div class="module-item module-report" data-module="report" onclick="navigateToReport()">
+                            <div class="module-icon">📊</div>
+                            <div class="module-info">
+                                <div class="module-name">Relatório Final</div>
+                            </div>
+                        </div>
+                    </nav>
+                </aside>
+
+                <!-- Content Area -->
+                <main class="content">
+                    <!-- Module 1: Emotions and Patterns -->
+                    <div id="module-1" class="module-content">
+                        <h2>Módulo 1: Emoções e Padrões</h2>
+                        <p class="module-intro">Este módulo avalia seus esquemas emocionais básicos desenvolvidos desde a infância. Estes padrões influenciam profundamente como você se relaciona com o dinheiro e toma decisões financeiras.</p>
+                        
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="switchTab(1, 1)">Desconexão e Rejeição</button>
+                            <button class="tab-btn" onclick="switchTab(1, 2)">Autonomia e Desempenho</button>
+                        </div>
+
+                        <div id="m1-tab-1" class="tab-content active">
+                            <h3>Desconexão e Rejeição</h3>
+                            <p class="tab-description">Avalia padrões relacionados à segurança emocional e confiança nos relacionamentos.</p>
+                            
+                            <div id="m1-questions-1" class="questions-container"></div>
+                            
+                            <button class="btn btn--primary" onclick="saveAndContinue(1, 1)">Salvar e Continuar</button>
+                        </div>
+
+                        <div id="m1-tab-2" class="tab-content">
+                            <h3>Autonomia e Desempenho</h3>
+                            <p class="tab-description">Avalia crenças sobre sua capacidade de funcionar independentemente e alcançar objetivos.</p>
+                            
+                            <div id="m1-questions-2" class="questions-container"></div>
+                            
+                            <button class="btn btn--primary" onclick="saveAndContinue(1, 2)">Salvar e Continuar</button>
+                        </div>
+                    </div>
+
+                    <!-- Module 2: Money Beliefs -->
+                    <div id="module-2" class="module-content">
+                        <h2>Módulo 2: Crenças sobre Dinheiro</h2>
+                        <p class="module-intro">Este módulo identifica suas crenças fundamentais sobre dinheiro (Money Scripts). Estas crenças, muitas vezes inconscientes, dirigem seus comportamentos financeiros.</p>
+                        
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="switchTab(2, 1)">Evitação do Dinheiro</button>
+                            <button class="tab-btn" onclick="switchTab(2, 2)">Adoração do Dinheiro</button>
+                            <button class="tab-btn" onclick="switchTab(2, 3)">Status do Dinheiro</button>
+                            <button class="tab-btn" onclick="switchTab(2, 4)">Vigilância do Dinheiro</button>
+                        </div>
+
+                        <div id="m2-tab-1" class="tab-content active">
+                            <h3>Evitação do Dinheiro</h3>
+                            <p class="tab-description">Crenças de que dinheiro é negativo ou corrupto.</p>
+                            <div id="m2-questions-1" class="questions-container"></div>
+                            <button class="btn btn--primary" onclick="saveAndContinue(2, 1)">Salvar e Continuar</button>
+                        </div>
+
+                        <div id="m2-tab-2" class="tab-content">
+                            <h3>Adoração do Dinheiro</h3>
+                            <p class="tab-description">Crenças de que dinheiro resolve todos os problemas e traz felicidade.</p>
+                            <div id="m2-questions-2" class="questions-container"></div>
+                            <button class="btn btn--primary" onclick="saveAndContinue(2, 2)">Salvar e Continuar</button>
+                        </div>
+
+                        <div id="m2-tab-3" class="tab-content">
+                            <h3>Status do Dinheiro</h3>
+                            <p class="tab-description">Crenças de que valor pessoal está vinculado a patrimônio.</p>
+                            <div id="m2-questions-3" class="questions-container"></div>
+                            <button class="btn btn--primary" onclick="saveAndContinue(2, 3)">Salvar e Continuar</button>
+                        </div>
+
+                        <div id="m2-tab-4" class="tab-content">
+                            <h3>Vigilância do Dinheiro</h3>
+                            <p class="tab-description">Crenças sobre necessidade de economizar e ser cauteloso.</p>
+                            <div id="m2-questions-4" class="questions-container"></div>
+                            <button class="btn btn--primary" onclick="saveAndContinue(2, 4)">Salvar e Continuar</button>
+                        </div>
+                    </div>
+
+                    <!-- Module 3: Habits and Control -->
+                    <div id="module-3" class="module-content">
+                        <h2>Módulo 3: Hábitos e Controle</h2>
+                        <p class="module-intro">Este módulo avalia seus comportamentos financeiros atuais, bem-estar financeiro e percepção de controle sobre suas finanças.</p>
+                        
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="switchTab(3, 1)">Bem-Estar Financeiro</button>
+                            <button class="tab-btn" onclick="switchTab(3, 2)">Gestão Financeira</button>
+                            <button class="tab-btn" onclick="switchTab(3, 3)">Locus de Controle</button>
+                        </div>
+
+                        <div id="m3-tab-1" class="tab-content active">
+                            <h3>Bem-Estar Financeiro (CFPB)</h3>
+                            <p class="tab-description">Avalia seu bem-estar financeiro atual e senso de segurança.</p>
+                            <div id="m3-questions-1" class="questions-container"></div>
+                            <button class="btn btn--primary" onclick="saveAndContinue(3, 1)">Salvar e Continuar</button>
+                        </div>
+
+                        <div id="m3-tab-2" class="tab-content">
+                            <h3>Comportamentos de Gestão Financeira (FMBS)</h3>
+                            <p class="tab-description">Avalia a frequência de comportamentos financeiros saudáveis.</p>
+                            <div id="m3-questions-2" class="questions-container"></div>
+                            <button class="btn btn--primary" onclick="saveAndContinue(3, 2)">Salvar e Continuar</button>
+                        </div>
+
+                        <div id="m3-tab-3" class="tab-content">
+                            <h3>Locus de Controle Financeiro</h3>
+                            <p class="tab-description">Avalia se você percebe suas finanças como resultado de suas ações ou de fatores externos.</p>
+                            <div id="m3-questions-3" class="questions-container"></div>
+                            <button class="btn btn--primary" onclick="saveAndContinue(3, 3)">Salvar e Continuar</button>
+                        </div>
+                    </div>
+
+                    <!-- Report Screen -->
+                    <div id="report-module" class="module-content">
+                        <div id="report-content"></div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Manual Modal -->
+        <div id="manual-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeManual()">&times;</span>
+                <div id="manual-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
